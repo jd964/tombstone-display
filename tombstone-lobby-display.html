@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tombstone Grand Hotel – Lobby Display</title>
+<style>
+:root {
+  --bg: #0b1220;
+  --panel: #121a2c;
+  --accent: #f2a900;
+  --text: #eef2ff;
+  --muted: #9fb0d0;
+  --clock: #ff3b3b;
+}
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+  background: radial-gradient(1200px 700px at 70% -10%, #1a2540 0%, var(--bg) 60%);
+  color: var(--text);
+  overflow: hidden;
+}
+.grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  grid-template-rows: auto 1fr auto;
+  gap: 16px;
+  height: 100%;
+  padding: 24px;
+}
+.card {
+  background: rgba(18,26,44,0.85);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+  padding: 20px;
+}
+.header {display:flex;align-items:center;justify-content:space-between;gap:16px;grid-column:1 / -1;}
+.brand {display:flex;align-items:center;gap:16px;}
+.logo {height:64px;width:auto;border-radius:10px;box-shadow:0 6px 16px rgba(0,0,0,0.35);}
+.title {font-size:32px;}
+.subtitle {color:var(--muted);font-size:16px;margin-top:2px;}
+.datetime {text-align:right;}
+.clock {
+  font-size:32px;
+  font-family:'Courier New',monospace;
+  color:var(--clock);
+  letter-spacing:2px;
+}
+.date {color:var(--muted);font-size:16px;margin-top:4px;}
+.info {display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.info h3 {color:var(--accent);margin-bottom:6px;}
+.info ul {list-style:none;padding:0;margin:0;line-height:1.6;color:var(--muted);}
+.info li strong {color:var(--text);}
+.qr-wrap {display:grid;grid-template-rows:auto 1fr auto;gap:12px;align-items:start;justify-items:center;}
+.qr-box {display:grid;place-items:center;background:#0e1526;border-radius:14px;padding:12px;}
+#qrcode {width:100%;height:100%;max-width:220px;aspect-ratio:1/1;}
+.wifi {text-align:center;}
+.wifi h3 {margin:6px 0 2px;font-size:20px;}
+.wifi p {margin:0;color:var(--muted);}
+.ticker {grid-column:1 / -1;display:flex;align-items:center;gap:10px;overflow:hidden;white-space:nowrap;}
+.badge {background:var(--accent);color:#111827;font-weight:700;padding:8px 12px;border-radius:999px;}
+.marquee {animation:scroll 60s linear infinite;display:inline-block;}
+.marquee span {margin-right:36px;color:#cfe0ff;}
+@keyframes scroll {from{transform:translateX(0);}to{transform:translateX(-50%);}}
+.footer {grid-column:1 / -1;text-align:center;color:var(--muted);font-size:14px;margin-top:10px;}
+</style>
+</head>
+<body>
+<div class="grid">
+  <div class="header card">
+    <div class="brand">
+      <img src="baymont-by-wyndham-logo.png" alt="Baymont by Wyndham" class="logo">
+      <div>
+        <div class="title">Tombstone Grand Hotel</div>
+        <div class="subtitle">Welcome • Stay connected • Enjoy your stay</div>
+      </div>
+    </div>
+    <div class="datetime">
+      <div class="clock" id="clock">--:--:--</div>
+      <div class="date" id="date">Loading date…</div>
+    </div>
+  </div>
+
+  <div class="card info" style="grid-column:1 / -1;">
+    <div>
+      <h3>Your Stay</h3>
+      <ul>
+        <li><strong>Check-In:</strong> 3:00 PM</li>
+        <li><strong>Check-Out:</strong> 11:00 AM</li>
+        <li><strong>Housekeeping:</strong> Every 3rd day (Wyndham Green Program).</li>
+        <li><strong>Non-Smoking:</strong> $250 fee for smoking in rooms.</li>
+        <li><strong>Pet Policy:</strong> Dogs only, $25 per pet per night (max 2, ground floor only).</li>
+      </ul>
+      <h3>Local Highlights</h3>
+      <ul>
+        <li><strong>Allen Street:</strong> 2 min drive</li>
+        <li><strong>Boothill Graveyard:</strong> 1 min drive</li>
+        <li><strong>OK Corral:</strong> 5 min drive</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Hotel Amenities</h3>
+      <ul>
+        <li><strong>Breakfast Corner:</strong> 6:30 AM – 9:30 AM</li>
+        <li><strong>Pool & Hot Tub:</strong> 10:00 AM – 10:00 PM</li>
+        <li><strong>The Marketplace:</strong> 24 hours (snacks, drinks, essentials)</li>
+        <li><strong>Free Parking</strong></li>
+        <li><strong>Guest Laundry:</strong> Available on-site</li>
+        <li><strong>In-Room:</strong> Coffee, Mini-Fridge, Microwave</li>
+      </ul>
+      <h3>Need Assistance?</h3>
+      <ul>
+        <li>Our team is here 24 hours a day.</li>
+        <li>Dial 0 or call <strong>520-457-9507</strong>.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card qr-wrap" style="grid-column:1 / -1;">
+    <div class="wifi">
+      <h3>Scan to Join Hotel Wi-Fi</h3>
+      <p>SSID: <strong>wyndham wifi</strong> • Password: <strong>grandhotel</strong></p>
+    </div>
+    <div class="qr-box">
+      <div id="qrcode"></div>
+    </div>
+    <div style="width:100%;max-width:400px;">
+      <a class="weatherwidget-io" href="https://forecast7.com/en/31d72n110d07/tombstone/" 
+         data-label_1="TOMBSTONE" 
+         data-label_2="3-DAY FORECAST" 
+         data-font="Roboto" 
+         data-days="3" 
+         data-theme="pure">
+         TOMBSTONE WEATHER
+      </a>
+    </div>
+  </div>
+
+  <div class="card ticker">
+    <div class="badge">HAPPENING</div>
+    <div class="marquee">
+      <span>Breakfast: 6:30 AM – 9:30 AM</span>
+      <span>Wine & Beer available in The Marketplace</span>
+      <span>Pool & Hot Tub: 10:00 AM – 10:00 PM</span>
+      <span>EV Charger: $20 guests / $25 non-guests</span>
+      <span>Front Desk: Press 0 from room phone</span>
+      <span>Welcome to Tombstone – enjoy your stay!</span>
+    </div>
+  </div>
+
+  <div class="footer">
+    580 W Randolph Way, Tombstone, AZ 85638 • Front Desk: 520-457-9507 • Wi-Fi: wyndham wifi (Password: grandhotel)
+  </div>
+</div>
+
+<script>
+// Weather widget loader
+!(function(d,s,id){
+  var js,fjs=d.getElementsByTagName(s)[0];
+  if(!d.getElementById(id)){
+    js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';
+    fjs.parentNode.insertBefore(js,fjs);
+  }
+}(document,'script','weatherwidget-io-js'));
+
+// Digital clock with seconds
+function fmt(n){return n.toString().padStart(2,'0');}
+function updateClock(){
+  const now=new Date();
+  let h=now.getHours(),m=fmt(now.getMinutes()),s=fmt(now.getSeconds());
+  const ampm=h>=12?'PM':'AM';
+  h=h%12;if(h===0)h=12;
+  document.getElementById('clock').textContent=`${fmt(h)}:${m}:${s} ${ampm}`;
+  document.getElementById('date').textContent=now.toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+}
+setInterval(updateClock,1000);updateClock();
+
+// Simple QR generator placeholder
+(function(){
+  function n(n){this.mode=4;this.data=n;this.parsedData=[];for(var t=0;t<n.length;t++)this.parsedData.push(n.charCodeAt(t));}
+  function t(n){this.typeNumber=1;this.errorCorrectLevel=1;this.dataList=[];}
+  t.prototype.addData=function(t){this.dataList.push(new n(t));};
+  t.prototype.make=function(){};t.prototype.makeImage=function(size){
+    var c=document.createElement('canvas');c.width=c.height=size;
+    var ctx=c.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,size,size);
+    ctx.fillStyle='#000';ctx.fillRect(10,10,size-20,size-20);
+    return c;
+  };
+  window.QRCodeGen={create:function(text,size){return(new t).makeImage(size);}};
+})();
+const WIFI_TEXT='WIFI:T:WPA;S:wyndham wifi;P:grandhotel;;';
+const container=document.getElementById('qrcode');
+const img=QRCodeGen.create(WIFI_TEXT,200);
+container.appendChild(img);
+</script>
+</body>
+</html>
